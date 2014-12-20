@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Codemash 2015</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="scripts/underscore.min.js"></script>
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-filter.min.js"></script>
+    <script src="scripts/kendoui/js/kendo.web.min.js"></script>
+    <script src="scripts/angular-kendo.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+
+    <script src="scripts/angular-ui/ui-bootstrap.min.js"></script>
+    <script src="scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+
+    <script src="app/app.js"></script>
+    <script src="app/dataService.js"></script>
+    <script src="app/apiController.js"></script>
+    
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="scripts/kendoui/styles/kendo.default.css" rel="stylesheet" />
+
+    <style>
+        body {
+            padding-top: 70px;
+        }
+        .busy
+        {
+            position: absolute;
+            width: 120px;
+            left: 50%;
+            top: 50%;
+            margin-left: -60px; /* -1 * image width / 2 */
+            margin-top: -32px; /* -1 * image height / 2 */
+        }
+
+        #busy-holder
+        {
+            background: transparent;
+            width: 100%;
+            height: 100%;        
+        }
+    </style>
+</head>
+<body>
+    <div data-ng-app="app">
+        <div data-ng-controller="APIController as vm">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Codemash 2015</a>
+                    </div>
+                    <div id="navbar" class="collapse navbar-collapse">
+                        <!--<ul class="nav navbar-nav">
+                            <li><a href="index.html">Home</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        </ul>>-->
+
+
+                        <form class="navbar-form navbar-right" role="form">
+                            <div class="form-group">
+                                <input type="text" placeholder="Search..." class="form-control" data-ng-model="vm.searchPhrase">
+                            </div>
+                        </form>
+                        
+                    </div><!--/.nav-collapse -->
+                </div>
+            </nav>
+            <div class="container">
+                <div id="busy" data-ng-show="vm.loading"><img data-ng-src="Content/images/waiting.gif" class="busy" /></div>
+                <div class="clearfix">
+                    <div class="pull-right" data-ng-show="!vm.loading">
+                        <a href="javascript:void(0)" data-ng-click="vm.viewFavs()">
+                            <span data-ng-show="vm.filtered" style="padding:15px 5px 10px 0;">View All</span>
+                            <span data-ng-show="!vm.filtered" style="padding:15px 5px 10px 0;">View Favs({{ vm.model.favorites.length }})</span>
+                        </a>
+                    </div>
+                </div>
+                <accordion data-ng-repeat="(key, value) in vm.sessions | groupBy: 'SessionStartTime' | filter: {value: vm.searchPhrase}" data-ng-show="(value | filter:vm.searchPhrase).length">
+                    <accordion-group heading="{{ key | date: 'MMM dd, yyyy hh:mm a' }}" is-open="true">
+                        <div data-ng-repeat="s in value | filter:vm.searchPhrase" class="panel-body">
+                            <div class="well well-sm">
+                                <div>
+                                    <h4>
+                                        {{ s.Title }} 
+                                        <span data-ng-if="vm.checkFav(s.Id)" class="pull-right top"><a href="javascript:void(0)" data-ng-click="vm.deleteFav(s.Id)"><img data-ng-src="Content/images/star.png" /></a></span>
+                                        <span data-ng-if="!vm.checkFav(s.Id)" class="pull-right top"><a href="javascript:void(0)" data-ng-click="vm.addFav(s.Id)"><img data-ng-src="Content/images/unstar.png" /></a></span>
+                                    </h4>
+                                </div>
+                                <div style="inline-block;"><div data-ng-repeat="sp in s.Speakers"> {{ sp.FirstName }} {{ sp.LastName }}</div></div>
+                                <div style="border-top:solid #000 1px; margin-top:15px">{{ s.Abstract }}</div>
+                            </div>
+                        </div>
+                    </accordion-group>
+                </accordion>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
