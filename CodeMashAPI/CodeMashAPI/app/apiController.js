@@ -6,7 +6,7 @@
         .module('app')
         .controller('APIController', APIController);
 
-    function APIController($http, DataSvc) {
+    function APIController($http, DataSvc, $filter) {
         var _this = this;
         _this.model = [];
         _this.loading = true;
@@ -23,6 +23,7 @@
                 .then(function (sessions) {
                     _this.sessions = sessions.data;
                     _this.model.dates = _.uniq(_.pluck(sessions.data, 'SessionStartTime'));
+                    _this.model.dates.unshift("----View All----");
                 },
                 function (error, status) {
                     //handle error
@@ -35,9 +36,28 @@
                 alert(error.data.message);
             });
 
-        //_this.filterForDate = function () {
-        //    _this.sessions = _.where(_this.sessions, { SessionStartTime: _this.dateFilter });
-        //}
+        _this.filterForDate = function () {
+            _this.loading = true;
+            DataSvc.getData(1)
+            .then(function (sessions) {
+                alert(_this.dateFilter);
+                if (_this.dateFilter != '----View All----')
+                {
+                    _this.sessions = _.where(sessions.data, { SessionStartTime: _this.dateFilter });
+                    toastr.success("Now showing sessions for " + $filter('date')(_this.dateFilter, 'MMM dd, yyyy hh:mm a'));
+                } else {
+                    _this.sessions = sessions.data;
+                    toastr.success("Now showing all sessions.");
+                }                
+            },
+            function (error) {
+                //handle error somehow
+            })
+            .then(function () {
+                _this.loading = false;
+            });
+            
+        }
         
         _this.viewFavs = function () {
             if (!_this.filtered) {

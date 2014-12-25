@@ -12,7 +12,7 @@
     <script src="scripts/kendoui/js/kendo.web.min.js"></script>
     <script src="scripts/angular-kendo.min.js"></script>
     <script src="scripts/bootstrap.min.js"></script>
-
+    <script src="scripts/toastr.min.js"></script>
     <script src="scripts/angular-ui/ui-bootstrap.min.js"></script>
     <script src="scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
 
@@ -22,6 +22,7 @@
     
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link href="scripts/kendoui/styles/kendo.default.css" rel="stylesheet" />
+    <link href="Content/toastr.css" rel="stylesheet" />
 
     <style>
         body {
@@ -46,7 +47,7 @@
     </style>
 </head>
 <body>
-    <div data-ng-app="app">
+    <div data-ng-app="app" class="ng-cloak">
         <div data-ng-controller="APIController as vm">
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <div class="container">
@@ -68,7 +69,7 @@
 
                         <form class="navbar-form navbar-right" role="form">
                             <div class="form-group">
-                                <!--<select data-ng-model="vm.dateFilter" data-ng-options="d as d for d in vm.model.dates" data-ng-change="vm.filterForDate()"></select>-->
+                                <select data-ng-model="vm.dateFilter" class="form-control" data-ng-options="d as (d | date: 'MMM dd, yyyy hh:mm a') for d in vm.model.dates" data-ng-change="vm.filterForDate()" data-ng-show="!vm.loading"></select>
                                 <input type="text" placeholder="Search..." class="form-control" data-ng-model="vm.searchPhrase">
                             </div>
                         </form>

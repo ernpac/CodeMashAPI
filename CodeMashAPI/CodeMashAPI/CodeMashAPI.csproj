@@ -90,6 +90,8 @@
     <Content Include="Content\images\star.png" />
     <Content Include="Content\images\unstar.png" />
     <Content Include="Content\images\waiting.gif" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
@@ -126,6 +128,8 @@
       <DependentUpon>ernpac.edmx</DependentUpon>
       <LastGenOutput>ernpac.cs</LastGenOutput>
     </Content>
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Properties\PublishProfiles\ernpac.net.pubxml" />
     <None Include="scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="scripts\bootstrap.js" />
@@ -870,6 +874,8 @@
     <Content Include="scripts\kendoui\styles\Uniform\sprite.png" />
     <Content Include="scripts\kendoui\styles\Uniform\sprite_2x.png" />
     <Content Include="scripts\npm.js" />
+    <Content Include="scripts\toastr.js" />
+    <Content Include="scripts\toastr.min.js" />
     <Content Include="scripts\underscore.js" />
     <Content Include="scripts\underscore.min.js" />
     <Content Include="Web.config" />
